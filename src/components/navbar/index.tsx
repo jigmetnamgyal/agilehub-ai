@@ -20,7 +20,7 @@ const NavBar = () => {
         <li><a>Item 3</a></li>
       </ul>
     </div>
-    <a className="btn btn-ghost text-xl">AgileHub</a>
+    <a className="btn btn-ghost text-xl ">AgileHub</a>
   </div>
   <div className="navbar-center hidden lg:flex">
     <ul className="menu menu-horizontal px-1">
@@ -30,7 +30,7 @@ const NavBar = () => {
     </ul>
   </div>
   <div className="navbar-end">
-    <a className="btn">Get Started</a>
+    <a className="btn bg-yellow-300 text-black rounded-[5px] px-10 hover:text-white hover:bg-transparent hover:border-2 hover:border-yellow-300">Get Started</a>
   </div>
 </div>
     )
