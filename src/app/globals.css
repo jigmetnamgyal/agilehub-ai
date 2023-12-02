@@ -16,6 +16,10 @@
   }
 }
 
+::selection {
+  background: #9b8e00;
+}
+
 body {
   color: white;
 }

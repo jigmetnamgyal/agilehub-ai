@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Source_Code_Pro } from 'next/font/google'
 import './globals.css'
 
-const sourceCodePro = Source_Code_Pro({ subsets: ['latin'] })
+const sourceCodePro = Source_Code_Pro({ subsets: ['latin'], weight: ['400', '700'] })
 
 export const metadata: Metadata = {
   title: 'AgileHub',
