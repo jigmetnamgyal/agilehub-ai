@@ -38,8 +38,9 @@ const SignUp = () => {
                 </div>
                 
             </div>
-            <div className="w-full h-full bg-white">
-                
+            <div className="w-full flex-col h-full bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 text-black flex justify-center items-center">
+                <p className="text-5xl text-center font-extrabold"><span className="">Jaggle</span> your coworker, supercharged by AI.</p>
+                <p className="mt-10 text-gray-500">jenniai.com</p>
             </div>
         </div>
     );
