@@ -1,5 +1,6 @@
 import NavBar from "@/components/navbar"
 import Footer from "@/components/footer"
+import Link from "next/link"
 
 export default function Home() {
   return (
@@ -9,7 +10,7 @@ export default function Home() {
           <p className="w-[60%] leading-[65px] text-5xl font-extrabold">The <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-red-300 to-yellow-300">Ultimate Empowerment</span> Partner for Your Team.</p>
           <p className="w-[60%] text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla iusto numquam assumenda provident. Officiis esse saepe cumque numquam tempora odio illo dolorum error inventore alias! Aspernatur ducimus exercitationem omnis tempora.</p>
 
-          <a className="btn bg-yellow-300 text-black rounded-[5px] px-10 hover:text-white hover:bg-transparent hover:border-2 hover:border-yellow-300">Start Using Jaggle</a>
+          <Link href={'/auth/login'} className="btn bg-yellow-300 text-black rounded-[5px] px-10 hover:text-white hover:bg-transparent hover:border-2 hover:border-yellow-300">Start Using Jaggle</Link>
         </div>
         
         <div className="mockup-browser border border-base-300 w-[80%] h-[600px] mt-14">

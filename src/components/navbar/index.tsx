@@ -1,5 +1,7 @@
 "use client"
 
+import Link from "next/link";
+
 const NavBar = () => {
     return(
         <div className="navbar bg-base-100 max-w-screen w-screen p-8">
@@ -30,7 +32,7 @@ const NavBar = () => {
     </ul>
   </div>
   <div className="navbar-end">
-    <a className="btn bg-yellow-300 text-black rounded-[5px] px-10 hover:text-white hover:bg-transparent hover:border-2 hover:border-yellow-300">Get Started</a>
+    <Link href={'/auth/login'} className="btn bg-yellow-300 text-black rounded-[5px] px-10 hover:text-white hover:bg-transparent hover:border-2 hover:border-yellow-300">Get Started</Link>
   </div>
 </div>
     )
