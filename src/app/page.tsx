@@ -1,6 +1,8 @@
 import NavBar from "@/components/navbar"
 import Footer from "@/components/footer"
 import Link from "next/link"
+import Image from "next/image"
+import mockupImg from '../../public/mockup.png'
 
 export default function Home() {
   return (
@@ -18,7 +20,9 @@ export default function Home() {
             <div className="mockup-browser-toolbar">
               <div className="input border border-base-300">https://www.jaggleai.com</div>
             </div>
-            <div className="flex justify-center px-4 py-16 border-t border-base-300"></div>
+            <Image className="" src={mockupImg} alt="Mockup image"/>
+            <div className="flex justify-center px-4 py-16 border-t border-base-300">
+            </div>
       </div>
 
       <div className="hero h-auto relative p-52">
