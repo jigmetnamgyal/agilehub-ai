@@ -6,8 +6,9 @@ import Link from "next/link";
 const Login = () => {
     return(
         <div className="flex w-screen min-h-screen h-screen justify-center items-center">
-            <div className="w-full h-full flex flex-col p-44">
-                <div>
+            <div className="w-full h-full flex flex-col">
+            <div className="w-[70%] flex flex-col h-full justify-center mx-auto">
+            <div>
                     <p className="text-3xl font-extrabold">Welcome Back</p>
                     <p className="mt-3 text-xs text-gray-400">Login to continue writing</p>
                     <div className="mt-10">
@@ -33,6 +34,8 @@ const Login = () => {
                         <p className="text-sm text-gray-400">Don't have an account? <Link href={'/auth/sign-up'} className="text-pink-300">Sign up here</Link></p>
                     </form>
                 </div>
+            </div>
+                
             </div>
             <div className="w-full h-full bg-white">
                 
