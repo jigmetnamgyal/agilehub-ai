@@ -1,4 +1,5 @@
 "use server";
+
 import { currentUser } from "@clerk/nextjs";
 
 const getUser = async () => {

@@ -5,19 +5,11 @@ import Footer from "@/components/footer";
 import Link from "next/link";
 import Image from "next/image";
 import mockupImg from "../../public/mockup.png";
-import getUser from "./api/getCurrentUser";
 
 export default function Home() {
-  const userPresent = async () => {
-    const userString = await getUser();
-    const user = JSON.parse(userString);
-
-    return user;
-  };
-
   return (
     <main className="flex h-auto flex-col items-center">
-      <NavBar user={userPresent()} />
+      <NavBar />
 
       <div className="h-[500px] w-full flex flex-col justify-center items-center text-center gap-10">
         <p className="w-[60%] leading-[65px] text-5xl font-extrabold">

@@ -4,21 +4,23 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useClerk } from "@clerk/clerk-react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
+import getUser from "@/app/api/getCurrentUser";
 
-const NavBar = ({ user }: any) => {
+const NavBar = () => {
   const [userDetails, setUser] = useState(null);
   const { signOut } = useClerk();
   const router = useRouter();
 
   useEffect(() => {
     const getUserDetails = async () => {
-      const userJSON = await user;
-      setUser(userJSON);
+      const userString = await getUser();
+      const user = JSON.parse(userString);
+
+      setUser(user);
     };
 
     getUserDetails();
-  }, []);
+  }, [userDetails]);
 
   return (
     <div className="navbar bg-base-100 max-w-screen w-screen p-8">
@@ -89,13 +91,14 @@ const NavBar = ({ user }: any) => {
         ) : (
           <div className="avatar">
             <div
-              onClick={() => signOut(() => router.push("/"))}
+              onClick={() => {
+                signOut(() => router.push("/"));
+                setUser(null);
+              }}
               className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2"
             >
-              <Image
+              <img
                 src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                width={100}
-                height={100}
                 alt=""
               />
             </div>
