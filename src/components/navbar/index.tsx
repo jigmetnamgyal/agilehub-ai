@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useClerk } from "@clerk/clerk-react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const NavBar = ({ user }: any) => {
   const [userDetails, setUser] = useState(null);
@@ -17,7 +18,7 @@ const NavBar = ({ user }: any) => {
     };
 
     getUserDetails();
-  }, [userDetails]);
+  }, []);
 
   return (
     <div className="navbar bg-base-100 max-w-screen w-screen p-8">
@@ -91,7 +92,12 @@ const NavBar = ({ user }: any) => {
               onClick={() => signOut(() => router.push("/"))}
               className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2"
             >
-              <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+              <Image
+                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                width={100}
+                height={100}
+                alt=""
+              />
             </div>
           </div>
         )}
