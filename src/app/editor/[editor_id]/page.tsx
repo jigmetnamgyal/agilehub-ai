@@ -9,7 +9,7 @@ const Editor = () => {
 
   return (
     <div>
-      <BlockNoteView editor={editor} />;
+      <BlockNoteView editor={editor} />
     </div>
   );
 };
