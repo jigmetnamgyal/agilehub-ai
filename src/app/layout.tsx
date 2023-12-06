@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Source_Code_Pro } from 'next/font/google'
+import { ClerkProvider } from '@clerk/nextjs'
 import './globals.css'
 
 const sourceCodePro = Source_Code_Pro({ subsets: ['latin'], weight: ['400', '700'] })
@@ -15,8 +16,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" data-theme="halloween">
-      <body className={sourceCodePro.className}>{children}</body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" data-theme="halloween">
+        <body className={sourceCodePro.className}>{children}</body>
+      </html>
+    </ClerkProvider>
   )
 }
