@@ -1,7 +1,7 @@
 "use client"
 
-import Image from "next/image";
-import googleIcon from '../../../../public/google.svg'
+// import Image from "next/image";
+// import googleIcon from '../../../../public/google.svg'
 import Link from "next/link";
 import { useState } from "react";
 import { useSignUp } from '@clerk/nextjs';
@@ -28,7 +28,7 @@ const SignUp = () => {
         try {
             await signUp.create({ emailAddress: email, password, firstName, lastName })
 
-            await signUp.prepareEmailAddressVerification({ strategy: 'email_code'});
+            await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
 
             setVerifying(true);
         } catch (err: any) {

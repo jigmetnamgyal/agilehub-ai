@@ -1,9 +1,26 @@
 "use client"
-import Image from "next/image";
-import googleIcon from '../../../../public/google.svg'
+
+// import Image from "next/image";
+// import googleIcon from '../../../../public/google.svg'
 import Link from "next/link";
+import { useState } from "react";
+import { useSignIn } from "@clerk/nextjs";
 
 const Login = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const { isLoaded, signIn, setActive } = useSignIn();
+
+    if (!isLoaded) {
+        return null;
+    }
+
+    async function submit(e: any) {
+        e.preventDefault();
+    
+    }
+
     return(
         <div className="flex w-screen min-h-screen h-screen justify-center items-center">
             <div className="w-full h-full flex flex-col">
