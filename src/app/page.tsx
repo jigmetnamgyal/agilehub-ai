@@ -7,7 +7,7 @@ import Image from "next/image";
 import mockupImg from "../../public/mockup.png";
 import getUser from "./api/getCurrentUser";
 
-export default async function Home() {
+export default function Home() {
   const userPresent = async () => {
     const userString = await getUser();
     const user = JSON.parse(userString);
