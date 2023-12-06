@@ -9,17 +9,17 @@ const Login = () => {
             <div className="w-full h-full flex flex-col">
             <div className="w-[70%] flex flex-col h-full justify-center mx-auto">
             <div>
-                    <p className="text-3xl font-extrabold">Welcome Back</p>
-                    <p className="mt-3 text-xs text-gray-400">Login to continue writing</p>
-                    <div className="mt-10">
-                        <button className="btn bg-white w-full text-black hover:bg-transparent hover:text-white">
-                            <Image src={googleIcon} width="40" height="40" alt="Google Icon"></Image>
-                            <p>Login With Google</p>
-                        </button>
-                    </div>
-                </div>
-                <div className="divider mt-10">Or continue with</div>
-                <div className="w-full">
+                <p className="text-3xl font-extrabold">Welcome Back</p>
+                <p className="mt-3 text-xs text-gray-400">Login to continue writing</p>
+                {/* <div className="mt-10">
+                    <button className="btn bg-white w-full text-black hover:bg-transparent hover:text-white">
+                        <Image src={googleIcon} width="40" height="40" alt="Google Icon"></Image>
+                        <p>Login With Google</p>
+                    </button>
+                </div> */}
+            </div>
+                {/* <div className="divider mt-10">Or continue with</div> */}
+                <div className="w-full mt-10">
                     <form action="" className="flex flex-col gap-4 w-full">
                         <label htmlFor="email">Email</label>
                         <input required type="text" placeholder="jtn@gmail.com" className="input input-bordered w-full" />

@@ -11,6 +11,9 @@ const SignUp = () => {
     const { isLoaded, signUp, setActive } = useSignUp();
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+
     const [verifying, setVerifying] = useState(false);
     const [code, setCode] = useState("");
     const router = useRouter();
@@ -23,7 +26,7 @@ const SignUp = () => {
         if (!isLoaded) return;
 
         try {
-            await signUp.create({ emailAddress: email, password })
+            await signUp.create({ emailAddress: email, password, firstName, lastName })
 
             await signUp.prepareEmailAddressVerification({ strategy: 'email_code'});
 
@@ -77,7 +80,6 @@ const SignUp = () => {
                         </form>
                     </div>
                     </div>
-                    
                 </div>
                 <div className="w-full flex-col h-full bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 text-black flex justify-center items-center">
                     <p className="text-5xl text-center font-extrabold"><span className="">Jaggle</span> your coworker, supercharged by AI.</p>
@@ -94,18 +96,30 @@ const SignUp = () => {
                 <div>
                     <p className="text-3xl font-extrabold">Sign Up</p>
                     <p className="mt-3 text-xs text-gray-400">Create your free Jaggle account</p>
-                    <div className="mt-10">
-                        <button className="btn bg-white w-full text-black hover:bg-transparent hover:text-white">
-                            <Image src={googleIcon} width="40" height="40" alt="Google Icon"></Image>
-                            <p>Sign up with Google</p>
-                        </button>
-                    </div>
+                    {/* <div className="mt-10">
+                        <Link href={`https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URL}&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&state=GXWjhHhppJCNFcq8Y6HRl4HGx2xmEeC3`}>
+                            <button className="btn bg-white w-full text-black hover:bg-transparent hover:text-white">
+                                <Image src={googleIcon} width="40" height="40" alt="Google Icon"></Image>
+                                <p>Sign up with Google</p>
+                            </button>
+                        </Link>
+                    </div> */}
                 </div>
-                <div className="divider mt-10">Or continue with</div>
-                <div className="w-full">
+                {/* <div className="divider mt-10">Or continue with</div> */}
+                <div className="w-full mt-10">
                     <form action="" className="flex flex-col gap-2 w-full">
-                        <label htmlFor="name">Full Name</label>
-                        <input id="name" type="text" placeholder="Jaggle" className="input input-bordered w-full" />
+                        <div className="w-full flex">
+                            <div className="w-full mr-4">
+                                <label htmlFor="fname">First Name</label>
+                                <input onChange={(e) => setFirstName(e.target.value)} id="fname" type="text" placeholder="Jaggle" className="input input-bordered w-full" />
+                            </div>
+                            
+                            <div className="w-full">
+                                <label htmlFor="lname">Last Name</label>
+                                <input onChange={(e) => setLastName(e.target.value)} id="lname" type="text" placeholder="Ai" className="input input-bordered w-full" />
+                            </div>
+                        </div>
+                        
 
                         <label htmlFor="email" className="mt-3">Email</label>
                         <input id="email" onChange={(e) => setEmail(e.target.value)} required type="text" placeholder="jtn@gmail.com" className="input input-bordered w-full" />
