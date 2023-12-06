@@ -59,7 +59,7 @@ const SignUp = () => {
       if (completeSignUp.status === "complete") {
         await setActive({ session: completeSignUp.createdSessionId });
         // TODO: redirect to the dashboard
-        router.push("/");
+        router.push("/editor/jtn");
       }
     } catch (err: any) {
       console.error("Error:", JSON.stringify(err, null, 2));
