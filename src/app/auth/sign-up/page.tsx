@@ -1,10 +1,8 @@
 "use client";
 
-// import Image from "next/image";
-// import googleIcon from '../../../../public/google.svg'
 import Link from "next/link";
 import { useState } from "react";
-import { useSignUp } from "@clerk/nextjs";
+import { useSignUp, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 
 const SignUp = () => {
@@ -18,15 +16,13 @@ const SignUp = () => {
   const [code, setCode] = useState("");
   const router = useRouter();
 
-  // const [name, setName] = useState('')
-
   const handleSignUp = async (e: any) => {
     e.preventDefault();
 
     if (!isLoaded) return;
 
     try {
-      await signUp.create({
+      const user = await signUp.create({
         emailAddress: email,
         password,
         firstName,
@@ -58,8 +54,7 @@ const SignUp = () => {
 
       if (completeSignUp.status === "complete") {
         await setActive({ session: completeSignUp.createdSessionId });
-        // TODO: redirect to the dashboard
-        router.push("/editor/jtn");
+        router.push(`/editor/${completeSignUp.createdUserId}`);
       }
     } catch (err: any) {
       console.error("Error:", JSON.stringify(err, null, 2));

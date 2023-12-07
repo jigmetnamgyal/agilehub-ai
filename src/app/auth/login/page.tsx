@@ -1,16 +1,21 @@
 "use client";
 
-// import Image from "next/image";
-// import googleIcon from '../../../../public/google.svg'
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import getUser from "@/app/api/getCurrentUser";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const router = useRouter();
+
+  async function getUserDetails() {
+    const userData = await getUser();
+    return userData;
+  }
 
   const { isLoaded, signIn, setActive } = useSignIn();
 
@@ -31,9 +36,10 @@ const Login = () => {
       });
 
       if (result.status === "complete") {
-        console.log(result);
         await setActive({ session: result.createdSessionId });
-        router.push("/editor/jtn");
+        const user = await getUserDetails();
+        const userDetails = JSON.parse(user);
+        router.push(`/editor/${userDetails.id}`);
       } else {
         /*Investigate why the login hasn't completed */
         console.log("Issue ya");
