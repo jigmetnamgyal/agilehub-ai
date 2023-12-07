@@ -30,9 +30,10 @@ const Editor = () => {
   const editor: BlockNoteEditor | null = useBlockNote({});
 
   return (
-    <div className="max-w-screen w-screen h-screen max-h-auto bg-white">
+    <div className="flex max-w-screen w-screen h-screen max-h-auto bg-white">
+      <div className="h-screen sticky bg-gray-100 w-[300px]"></div>
       <BlockNoteView
-        className="w-full h-full"
+        className="w-full h-full p-20"
         editor={editor}
         theme={"light"}
       />
