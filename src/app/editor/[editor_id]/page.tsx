@@ -1,13 +1,21 @@
 "use client";
 
 import { BlockNoteEditor } from "@blocknote/core";
-import { BlockNoteView, useBlockNote } from "@blocknote/react";
-import "@blocknote/core/style.css";
+import {
+  BlockNoteView,
+  Theme,
+  darkDefaultTheme,
+  lightDefaultTheme,
+  useBlockNote,
+} from "@blocknote/react";
 import { useEffect, useState } from "react";
 import getUser from "@/app/api/getCurrentUser";
-import { useParams } from "next/navigation";
+
+import "@blocknote/core/style.css";
 
 const Editor = () => {
+  const [userDetails, setUserDetails] = useState({});
+
   useEffect(() => {
     const getUserDetails = async () => {
       const userString = await getUser();
@@ -19,15 +27,15 @@ const Editor = () => {
     getUserDetails();
   }, []);
 
-  const [userDetails, setUserDetails] = useState({});
-
-  const params = useParams();
-
-  const editor: BlockNoteEditor = useBlockNote({});
+  const editor: BlockNoteEditor | null = useBlockNote({});
 
   return (
-    <div>
-      <BlockNoteView editor={editor} />
+    <div className="max-w-screen w-screen h-screen max-h-auto bg-white">
+      <BlockNoteView
+        className="w-full h-full"
+        editor={editor}
+        theme={"light"}
+      />
     </div>
   );
 };
