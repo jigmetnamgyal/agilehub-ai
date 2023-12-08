@@ -1,17 +1,12 @@
 "use client";
 
 import { BlockNoteEditor } from "@blocknote/core";
-import {
-  BlockNoteView,
-  Theme,
-  darkDefaultTheme,
-  lightDefaultTheme,
-  useBlockNote,
-} from "@blocknote/react";
+import { BlockNoteView, useBlockNote } from "@blocknote/react";
 import { useEffect, useState } from "react";
 import getUser from "@/app/api/getCurrentUser";
 
 import "@blocknote/core/style.css";
+import SideNavigation from "../_component/sideNavigation";
 
 const Editor = () => {
   const [userDetails, setUserDetails] = useState({});
@@ -31,7 +26,7 @@ const Editor = () => {
 
   return (
     <div className="flex max-w-screen w-screen h-screen max-h-auto bg-white">
-      <div className="h-screen sticky bg-gray-100 w-[300px]"></div>
+      <SideNavigation />
       <BlockNoteView
         className="w-full h-full p-20"
         editor={editor}
