@@ -12,6 +12,14 @@ const Editor = () => {
   const [userDetails, setUserDetails] = useState({});
   const [userStory, setUserStory] = useState("");
 
+  function removeBackticks(str: string) {
+    debugger;
+    if (str.startsWith("```") && str.endsWith("```")) {
+      return str.slice(3, -3);
+    }
+    return str;
+  }
+
   useEffect(() => {
     const getUserDetails = async () => {
       const userString = await getUser();
@@ -30,14 +38,18 @@ const Editor = () => {
   }
 
   return (
-    <div className="flex max-w-screen w-screen h-screen max-h-auto bg-white">
+    <div className="flex max-w-screen w-screen h-screen min-h-auto bg-white">
       <SideNavigation getData={getJaggleAiResponse} />
       {/* <BlockNoteView
 				className="w-full h-full p-20"
 				editor={editor}
 				theme={"light"}
 			/> */}
-      {/* <p className="text-black w-80%">{userStory}</p> */}
+      <div
+        className="text-black w-full p-16 h-full"
+        dangerouslySetInnerHTML={{ __html: removeBackticks(userStory) }}
+      />
+      ;<p className="text-black w-80%">{}</p>
     </div>
   );
 };
