@@ -25,6 +25,7 @@ const SideNavigation = ({ getData }: any) => {
     } else {
       resetWidth();
     }
+    /* trunk-ignore(eslint/react-hooks/exhaustive-deps) */
   }, [isMobile]);
 
   useEffect(() => {
