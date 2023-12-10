@@ -3,9 +3,15 @@
 import { ElementRef, useEffect, useRef, useState } from "react";
 import { ChevronsLeft, MenuIcon } from "lucide-react";
 import { useMediaQuery } from "usehooks-ts";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import getUser from "@/app/api/getCurrentUser";
+import truncateStr from "../_utils/truncate";
+import { useClerk } from "@clerk/nextjs";
 
 const SideNavigation = ({ getData }: any) => {
+  const { signOut } = useClerk();
+  const router = useRouter();
+
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768px)");
 
@@ -18,6 +24,7 @@ const SideNavigation = ({ getData }: any) => {
 
   const [userStoryPrompt, setUserStoryPrompt] = useState("");
   const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
     if (isMobile) {
@@ -25,7 +32,6 @@ const SideNavigation = ({ getData }: any) => {
     } else {
       resetWidth();
     }
-    /* trunk-ignore(eslint/react-hooks/exhaustive-deps) */
   }, [isMobile]);
 
   useEffect(() => {
@@ -34,12 +40,23 @@ const SideNavigation = ({ getData }: any) => {
     }
   }, [pathname, isMobile]);
 
+  useEffect(() => {
+    const getUserDetails = async () => {
+      const usr = await getUser();
+      const usrDetails = JSON.parse(usr);
+      setUser(usrDetails);
+      console.log(usrDetails);
+    };
+
+    getUserDetails();
+  }, []);
+
   const handleMouseMove = (e: MouseEvent) => {
     if (!isResizing.current) return;
 
     let newWidth = e.clientX;
 
-    if (newWidth < 208) newWidth = 208;
+    if (newWidth < 240) newWidth = 240;
     if (newWidth > 480) newWidth = 480;
 
     if (sideBarRef.current && navbarRef.current) {
@@ -63,13 +80,13 @@ const SideNavigation = ({ getData }: any) => {
       setIsCollapsed(false);
       setIsResetting(true);
 
-      sideBarRef.current.style.width = isMobile ? "100%" : "208px";
+      sideBarRef.current.style.width = isMobile ? "100%" : "240px";
       navbarRef.current.style.setProperty(
         "width",
-        isMobile ? "0" : "calc(100% - 208px)",
+        isMobile ? "0" : "calc(100% - 240px)",
       );
 
-      navbarRef.current.style.setProperty("left", isMobile ? "100%" : "208px");
+      navbarRef.current.style.setProperty("left", isMobile ? "100%" : "240px");
       setTimeout(() => setIsResetting(false), 300);
     }
   };
@@ -121,25 +138,65 @@ const SideNavigation = ({ getData }: any) => {
     <>
       {loading ? (
         <div className="w-screen h-screen bg-black/60 absolute top-0 left-0 z-[999999] flex justify-center items-center">
-          <p>Jaggle is 💭</p>208px
+          <p>Jaggle is 💭</p>
           <span className="loading loading-dots loading-lg"></span>
         </div>
       ) : null}
       <aside
         ref={sideBarRef}
-        className={`group/sidebar bg-primary-content z-[99999] h-full overflow-y-auto relative flex flex-col p-4 ${
+        className={`group/sidebar bg-primary-content z-[99999] h-full overflow-y-auto relative flex flex-col ${
           isResetting && "transition-all ease-in-out duration-300"
-        } ${isMobile ? "w-0 p-0" : "w-52"}`}
+        } ${isMobile ? "w-0 p-0" : "w-60"}`}
       >
-        <div
-          role="button"
-          onClick={collapse}
-          className={`h-6 w-6 rounded-sm hover:bg-neutral-300 absolute top-3 right-2 group-hover/sidebar:opacity-100 transition ${
-            isMobile ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <ChevronsLeft className="h-6 w-6 text-yellow-300" />
+        <div className="w-auto px-4 pt-[12px] z-[999999] flex">
+          <div className="w-full dropdown">
+            <div tabIndex={0} role="button" className="w-full flex">
+              <div className="avatar object-contain">
+                <div className="w-7 h-7 rounded-full">
+                  {/* trunk-ignore(eslint/@next/next/no-img-element) */}
+                  <img src={user?.imageUrl} alt="Avatar" />
+                </div>
+              </div>
+
+              <div className="ml-2">
+                <p className="text-xs">{user?.firstName}'s Workspace</p>
+                <p className="text-[8px]">
+                  {truncateStr(
+                    user?.emailAddresses[0].emailAddress,
+                    user?.emailAddresses[0].emailAddress.indexOf("@"),
+                  )}
+                  ...
+                </p>
+              </div>
+            </div>
+
+            <ul
+              tabIndex={0}
+              className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+            >
+              <li>
+                <p
+                  onClick={() => {
+                    signOut(() => router.push("/"));
+                  }}
+                >
+                  Logout
+                </p>
+              </li>
+            </ul>
+          </div>
+
+          <div
+            role="button"
+            onClick={collapse}
+            className={`h-6 w-6 z-[999999] rounded-sm hover:bg-neutral-300 absolute top-3 right-2 group-hover/sidebar:opacity-100 transition ${
+              isMobile ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <ChevronsLeft className="h-6 w-6 text-yellow-300" />
+          </div>
         </div>
+
         <button
           className="btn my-10 bg-yellow-300 text-black max-w-[300px] mx-auto"
           onClick={() => {
@@ -184,7 +241,7 @@ const SideNavigation = ({ getData }: any) => {
         <div
           onMouseDown={handleMouseDown}
           onClick={resetWidth}
-          className="opacity-0 group-hover/sidebar:opacity-100 transition cursor-ew-resize absolute h-full w-1 bg-white/40 right-0 top-0"
+          className="opacity-0 group-hover/sidebar:opacity-100 transition cursor-ew-resize absolute h-full w-[3px] bg-yellow-300/80 right-0 top-0"
         ></div>
       </aside>
 
