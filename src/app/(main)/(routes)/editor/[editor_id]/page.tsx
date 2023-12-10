@@ -10,6 +10,7 @@ import SideNavigation from "../_component/sideNavigation";
 
 const Editor = () => {
   const [userDetails, setUserDetails] = useState({});
+  const [userStory, setUserStory] = useState("");
 
   useEffect(() => {
     const getUserDetails = async () => {
@@ -24,14 +25,19 @@ const Editor = () => {
 
   const editor: BlockNoteEditor | null = useBlockNote({});
 
+  function getJaggleAiResponse(childData: any) {
+    setUserStory(childData?.jaggleAiResponse);
+  }
+
   return (
     <div className="flex max-w-screen w-screen h-screen max-h-auto bg-white">
-      <SideNavigation />
-      <BlockNoteView
-        className="w-full h-full p-20"
-        editor={editor}
-        theme={"light"}
-      />
+      <SideNavigation getData={getJaggleAiResponse} />
+      {/* <BlockNoteView
+				className="w-full h-full p-20"
+				editor={editor}
+				theme={"light"}
+			/> */}
+      <p className="text-black w-80%">User stroy: {userStory}</p>
     </div>
   );
 };
