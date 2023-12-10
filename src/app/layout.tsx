@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Source_Code_Pro } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
+import { Toaster } from "sonner";
 
 const sourceCodePro = Source_Code_Pro({
   subsets: ["latin"],
@@ -21,7 +22,10 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" data-theme="halloween">
-        <body className={sourceCodePro.className}>{children}</body>
+        <body className={sourceCodePro.className}>
+          <Toaster richColors closeButton position="top-right" />
+          {children}
+        </body>
       </html>
     </ClerkProvider>
   );

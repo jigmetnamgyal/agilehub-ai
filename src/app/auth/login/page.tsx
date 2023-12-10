@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import getUser from "@/app/api/getCurrentUser";
+import { toast } from "sonner";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -39,6 +40,7 @@ const Login = () => {
         await setActive({ session: result.createdSessionId });
         const user = await getUserDetails();
         const userDetails = JSON.parse(user);
+        toast.success("Signed In successfully");
         router.push(`/editor/${userDetails.id}`);
       } else {
         /*Investigate why the login hasn't completed */
@@ -46,6 +48,7 @@ const Login = () => {
         console.log(result);
       }
     } catch (err: any) {
+      toast.error(err.errors[0].longMessage);
       console.error("error", err.errors[0].longMessage);
     }
   }

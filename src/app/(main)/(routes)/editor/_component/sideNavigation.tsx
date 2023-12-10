@@ -9,6 +9,7 @@ import truncateStr from "../_utils/truncate";
 import { useClerk } from "@clerk/nextjs";
 import CreateProject from "./createProject";
 import ProjectFolder from "./projectFolder";
+import { toast } from "sonner";
 
 const SideNavigation = ({ getData }: any) => {
   const { signOut } = useClerk();
@@ -184,6 +185,7 @@ const SideNavigation = ({ getData }: any) => {
                 <p
                   onClick={() => {
                     signOut(() => router.push("/"));
+                    toast.success("Successfully logged out");
                   }}
                 >
                   Logout
