@@ -13,7 +13,6 @@ const Editor = () => {
   const [userStory, setUserStory] = useState("");
 
   function removeBackticks(str: string) {
-    debugger;
     if (str.startsWith("```") && str.endsWith("```")) {
       return str.slice(3, -3);
     }

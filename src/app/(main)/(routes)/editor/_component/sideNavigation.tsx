@@ -1,12 +1,14 @@
 "use client";
 
 import { ElementRef, useEffect, useRef, useState } from "react";
-import { ChevronsLeft, MenuIcon } from "lucide-react";
+import { ChevronsLeft, MenuIcon, PlusCircle } from "lucide-react";
 import { useMediaQuery } from "usehooks-ts";
 import { usePathname, useRouter } from "next/navigation";
 import getUser from "@/app/api/getCurrentUser";
 import truncateStr from "../_utils/truncate";
 import { useClerk } from "@clerk/nextjs";
+import CreateProject from "./createProject";
+import ProjectFolder from "./projectFolder";
 
 const SideNavigation = ({ getData }: any) => {
   const { signOut } = useClerk();
@@ -25,6 +27,8 @@ const SideNavigation = ({ getData }: any) => {
   const [userStoryPrompt, setUserStoryPrompt] = useState("");
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<any>(null);
+
+  const [projectDescription, setProjectDescription] = useState<string>("");
 
   useEffect(() => {
     if (isMobile) {
@@ -56,7 +60,7 @@ const SideNavigation = ({ getData }: any) => {
 
     let newWidth = e.clientX;
 
-    if (newWidth < 240) newWidth = 240;
+    if (newWidth < 288) newWidth = 288;
     if (newWidth > 480) newWidth = 480;
 
     if (sideBarRef.current && navbarRef.current) {
@@ -80,13 +84,13 @@ const SideNavigation = ({ getData }: any) => {
       setIsCollapsed(false);
       setIsResetting(true);
 
-      sideBarRef.current.style.width = isMobile ? "100%" : "240px";
+      sideBarRef.current.style.width = isMobile ? "100%" : "288px";
       navbarRef.current.style.setProperty(
         "width",
-        isMobile ? "0" : "calc(100% - 240px)",
+        isMobile ? "0" : "calc(100% - 288px)",
       );
 
-      navbarRef.current.style.setProperty("left", isMobile ? "100%" : "240px");
+      navbarRef.current.style.setProperty("left", isMobile ? "100%" : "288px");
       setTimeout(() => setIsResetting(false), 300);
     }
   };
@@ -134,6 +138,8 @@ const SideNavigation = ({ getData }: any) => {
     getData(data);
   }
 
+  const createProject = async () => {};
+
   return (
     <>
       {loading ? (
@@ -146,7 +152,7 @@ const SideNavigation = ({ getData }: any) => {
         ref={sideBarRef}
         className={`group/sidebar bg-primary-content z-[99999] h-full overflow-y-auto relative flex flex-col ${
           isResetting && "transition-all ease-in-out duration-300"
-        } ${isMobile ? "w-0 p-0" : "w-60"}`}
+        } ${isMobile ? "w-0 p-0" : "w-72"}`}
       >
         <div className="w-auto px-4 pt-[12px] z-[999999] flex">
           <div className="w-full dropdown">
@@ -197,14 +203,14 @@ const SideNavigation = ({ getData }: any) => {
           </div>
         </div>
 
-        <button
-          className="btn my-10 bg-yellow-300 text-black max-w-[300px] mx-auto"
-          onClick={() => {
-            document.getElementById("my_modal_4")?.showModal();
-          }}
-        >
-          <p className="text-xs">Generate User Story</p>
-        </button>
+        {/* <button
+					className="btn my-10 bg-yellow-300 text-black max-w-[300px] mx-auto"
+					onClick={() => {
+						document.getElementById("my_modal_4")?.showModal();
+					}}
+				>
+					<p className="text-xs">Generate User Story</p>
+				</button> */}
         <dialog id="my_modal_4" className="modal w-[60%] mx-auto">
           <div className="modal-box w-11/12 max-w-5xl">
             <p className="mb-10 font-bold text-lg">
@@ -230,12 +236,53 @@ const SideNavigation = ({ getData }: any) => {
             </div>
           </div>
         </dialog>
-        <div>
-          <p>Action Items</p>
+        <div className="mt-8">
+          <CreateProject
+            onClick={() => {
+              document.getElementById("my_modal_5")?.showModal();
+            }}
+            label="New Project"
+            icon={PlusCircle}
+          />
         </div>
 
-        <div className="mt-4">
-          <p>Documents</p>
+        <dialog id="my_modal_5" className="modal w-[60%] mx-auto">
+          <div className="modal-box w-11/12 max-w-5xl">
+            <p className="mb-5 font-bold text-md">
+              👋 What is the name of your project ?
+            </p>
+            <input
+              type="text"
+              placeholder="Jaggle"
+              className="mb-5 input outline outline-offset-1 focus:outline-yellow-300 outline-yellow-300 outline-1 w-full rounded-md"
+            />
+            <p className="mb-5 font-bold text-md">
+              👋 Tell me more about your Project ?
+            </p>
+            <textarea
+              onChange={(e) => setProjectDescription(e.target.value)}
+              className="mb-3 textarea outline outline-offset-1 focus:outline-yellow-300 outline-yellow-300 outline-1 w-full rounded-md"
+              placeholder="Type Here ..."
+            ></textarea>
+            <p className="text-xs text-gray-400">
+              <i>
+                Give detailed description about the project so that Jaggle AI
+                will have a good context of your project and generate accurate
+                data for you.
+              </i>
+            </p>
+            <div className="modal-action">
+              <form method="dialog">
+                <button onClick={createProject} className="btn text-white">
+                  Create Project
+                </button>
+              </form>
+            </div>
+          </div>
+        </dialog>
+
+        <div className="mt-8">
+          <ProjectFolder />
         </div>
 
         <div
@@ -247,7 +294,7 @@ const SideNavigation = ({ getData }: any) => {
 
       <div
         ref={navbarRef}
-        className={`absolute top-0 z-[99999] left-60 w-[calc(100%-240px)] ${
+        className={`absolute top-0 z-[99999] left-60 w-[calc(100%-288px)] ${
           isResetting && "transition-all ease-in-out duration-300"
         } ${isMobile && "left-0 w-full"}`}
       >
