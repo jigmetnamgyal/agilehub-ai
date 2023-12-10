@@ -37,7 +37,7 @@ const Editor = () => {
 				editor={editor}
 				theme={"light"}
 			/> */}
-      <p className="text-black w-80%">User stroy: {userStory}</p>
+      {/* <p className="text-black w-80%">{userStory}</p> */}
     </div>
   );
 };

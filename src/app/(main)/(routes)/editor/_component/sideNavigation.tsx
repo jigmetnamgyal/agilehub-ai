@@ -1,7 +1,7 @@
 "use client";
 
 import { ElementRef, useEffect, useRef, useState } from "react";
-import { ChevronsLeft, MenuIcon, Sidebar } from "lucide-react";
+import { ChevronsLeft, MenuIcon } from "lucide-react";
 import { useMediaQuery } from "usehooks-ts";
 import { usePathname } from "next/navigation";
 
@@ -18,6 +18,20 @@ const SideNavigation = ({ getData }: any) => {
 
   const [userStoryPrompt, setUserStoryPrompt] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (isMobile) {
+      collapse();
+    } else {
+      resetWidth();
+    }
+  }, [isMobile]);
+
+  useEffect(() => {
+    if (isMobile) {
+      collapse();
+    }
+  }, [pathname, isMobile]);
 
   const handleMouseMove = (e: MouseEvent) => {
     if (!isResizing.current) return;
@@ -41,6 +55,36 @@ const SideNavigation = ({ getData }: any) => {
     isResizing.current = false;
     document.removeEventListener("mousemove", handleMouseMove);
     document.removeEventListener("mouseup", handleMouseup);
+  };
+
+  const resetWidth = () => {
+    if (sideBarRef.current && navbarRef.current) {
+      setIsCollapsed(false);
+      setIsResetting(true);
+
+      sideBarRef.current.style.width = isMobile ? "100%" : "208px";
+      navbarRef.current.style.setProperty(
+        "width",
+        isMobile ? "0" : "calc(100% - 208px)",
+      );
+
+      navbarRef.current.style.setProperty("left", isMobile ? "100%" : "208px");
+      setTimeout(() => setIsResetting(false), 300);
+    }
+  };
+
+  const collapse = () => {
+    if (sideBarRef.current && navbarRef.current) {
+      setIsCollapsed(true);
+      setIsResetting(true);
+
+      sideBarRef.current.style.width = "0";
+      sideBarRef.current.style.padding = "0";
+      navbarRef.current.style.setProperty("width", "100%");
+
+      navbarRef.current.style.setProperty("left", "0");
+      setTimeout(() => setIsResetting(false), 300);
+    }
   };
 
   const handleMouseDown = (
@@ -82,20 +126,21 @@ const SideNavigation = ({ getData }: any) => {
       ) : null}
       <aside
         ref={sideBarRef}
-        className={`group/sidebar bg-primary-content z-[99999] w-52 h-full overflow-y-auto relative flex flex-col p-4 ${
+        className={`group/sidebar bg-primary-content z-[99999] h-full overflow-y-auto relative flex flex-col p-4 ${
           isResetting && "transition-all ease-in-out duration-300"
-        } ${isMobile && "w-0"}`}
+        } ${isMobile ? "w-0 p-0" : "w-52"}`}
       >
         <div
           role="button"
-          className={`h-6 w-6 text-muted-foreground rounded-sm hover:bg-neutral-300 absolute top-3 right-2 opacity-0 group-hover/sidebar:opacity-100 transition ${
-            isMobile && "opacity-100"
+          onClick={collapse}
+          className={`h-6 w-6 rounded-sm hover:bg-neutral-300 absolute top-3 right-2 group-hover/sidebar:opacity-100 transition ${
+            isMobile ? "opacity-100" : "opacity-0"
           }`}
         >
-          <ChevronsLeft className="h-6 w-6" />
+          <ChevronsLeft className="h-6 w-6 text-yellow-300" />
         </div>
         <button
-          className="btn mb-10 bg-yellow-300 text-black"
+          className="btn my-10 bg-yellow-300 text-black max-w-[300px] mx-auto"
           onClick={() => {
             document.getElementById("my_modal_4")?.showModal();
           }}
@@ -115,7 +160,7 @@ const SideNavigation = ({ getData }: any) => {
             <p className="text-xs">
               <i>
                 Example Prompt: Generate a user story for a SSO auth module with
-                goole and linkedIn feature.
+                google and linkedIn feature.
               </i>
             </p>
             <div className="modal-action">
@@ -137,7 +182,7 @@ const SideNavigation = ({ getData }: any) => {
 
         <div
           onMouseDown={handleMouseDown}
-          onClick={() => {}}
+          onClick={resetWidth}
           className="opacity-0 group-hover/sidebar:opacity-100 transition cursor-ew-resize absolute h-full w-1 bg-white/40 right-0 top-0"
         ></div>
       </aside>
@@ -149,7 +194,13 @@ const SideNavigation = ({ getData }: any) => {
         } ${isMobile && "left-0 w-full"}`}
       >
         <nav className="bg-transparent px-3 py-2 w-full">
-          {isCollapsed && <MenuIcon role="button" className="h-6 w-6 " />}
+          {isCollapsed && (
+            <MenuIcon
+              onClick={resetWidth}
+              role="button"
+              className="h-6 w-6 text-black"
+            />
+          )}
         </nav>
       </div>
     </>
