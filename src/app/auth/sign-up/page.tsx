@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useSignUp, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const SignUp = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -33,7 +34,7 @@ const SignUp = () => {
 
       setVerifying(true);
     } catch (err: any) {
-      console.log(err.message);
+      toast.error(err.message);
     }
   };
 

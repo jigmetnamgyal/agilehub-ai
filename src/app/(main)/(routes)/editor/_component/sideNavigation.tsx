@@ -11,14 +11,22 @@ import { useMediaQuery } from "usehooks-ts";
 import { usePathname, useRouter } from "next/navigation";
 import getUser from "@/app/api/getCurrentUser";
 import truncateStr from "../_utils/truncate";
-import { useClerk } from "@clerk/nextjs";
+import { useAuth, useClerk } from "@clerk/nextjs";
 import CreateProject from "./createProject";
 import ProjectFolder from "./projectFolder";
 import { toast } from "sonner";
+import { supabaseClient } from "@/app/api/supabase";
 
 const SideNavigation = ({ getData }: any) => {
   const { signOut } = useClerk();
   const router = useRouter();
+  const { userId, getToken } = useAuth();
+
+  const [userStoryPrompt, setUserStoryPrompt] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [projectId, setProjectId] = useState([]);
+  const [pageTitle, setPageTitle] = useState("");
+  const [pages, setPages] = useState<any>([]);
 
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -30,11 +38,10 @@ const SideNavigation = ({ getData }: any) => {
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
 
-  const [userStoryPrompt, setUserStoryPrompt] = useState("");
-  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<any>(null);
 
   const [projectDescription, setProjectDescription] = useState<string>("");
+  const [projectTitle, setProjectTitle] = useState<string>("");
 
   useEffect(() => {
     if (isMobile) {
@@ -55,7 +62,6 @@ const SideNavigation = ({ getData }: any) => {
       const usr = await getUser();
       const usrDetails = JSON.parse(usr);
       setUser(usrDetails);
-      console.log(usrDetails);
     };
 
     getUserDetails();
@@ -125,8 +131,40 @@ const SideNavigation = ({ getData }: any) => {
     document.addEventListener("mouseup", handleMouseup);
   };
 
+  function getProjectId(childData: any) {
+    setProjectId(childData);
+  }
+
+  const createProject = async () => {
+    const token = await getToken({ template: "jaggle_ai_supabase_jwt" });
+
+    try {
+      const { data, error } = await supabaseClient(token || "")
+        .from("projects")
+        .insert([
+          {
+            user_id: userId,
+            title: projectTitle,
+            description: projectDescription,
+          },
+        ])
+        .select();
+
+      if (error) {
+        toast.error(error.message);
+      } else {
+        toast.success("Project created successfully");
+      }
+    } catch (err: any) {
+      toast.error(err.message);
+    }
+  };
+
   async function generateStory() {
     setLoading(true);
+
+    const token = await getToken({ template: "jaggle_ai_supabase_jwt" });
+
     const response = await fetch("/api/jaggleai", {
       method: "POST",
       headers: {
@@ -138,17 +176,29 @@ const SideNavigation = ({ getData }: any) => {
     });
 
     const data = await response.json();
-    setLoading(false);
 
     getData(data);
-  }
 
-  const createProject = async () => {};
+    const pages = await supabaseClient(token as string)
+      .from("pages")
+      .insert([
+        {
+          page_title: pageTitle,
+          project_id: projectId,
+          user_prompt: userStoryPrompt,
+          ai_generated_description: data.jaggleAiResponse,
+        },
+      ])
+      .select("*");
+
+    setPages(pages.data);
+    setLoading(false);
+  }
 
   return (
     <>
       {loading ? (
-        <div className="w-screen h-screen bg-black/60 absolute top-0 left-0 z-[999999] flex justify-center items-center flex-col">
+        <div className="w-screen h-screen bg-gray-500/60 absolute top-0 left-0 flex flex-col justify-center items-center">
           <p className="text-lg font-extrabold text-center">
             Jaggle is writing your user story. <br /> It will take less than a
             min, thank you for your patience 🫰
@@ -234,6 +284,7 @@ const SideNavigation = ({ getData }: any) => {
             </p>
             <input
               type="text"
+              onChange={(e) => setProjectTitle(e.target.value)}
               placeholder="Jaggle"
               className="mb-5 input outline outline-offset-1 focus:outline-yellow-300 outline-yellow-300 outline-1 w-full rounded-md"
             />
@@ -263,17 +314,27 @@ const SideNavigation = ({ getData }: any) => {
         </dialog>
 
         <div className="mt-8">
-          <ProjectFolder />
+          <ProjectFolder project_id={getProjectId} pages={pages} />
         </div>
 
         <dialog id="my_modal_4" className="modal w-[60%] mx-auto">
           <div className="modal-box w-11/12 max-w-5xl">
-            <p className="mb-10 font-bold text-lg">
-              👋 What feature are you working today ?
+            <p className="mb-5 font-bold text-lg">
+              Can you provide me the title of the feature ?
+            </p>
+            <input
+              type="text"
+              onChange={(e) => setPageTitle(e.target.value)}
+              placeholder="SSO Auth"
+              className="mb-5 input outline outline-offset-1 focus:outline-yellow-300 outline-yellow-300 outline-1 w-full rounded-md"
+            />
+
+            <p className="mb-5 font-bold text-lg">
+              Can you explain me the feature ?
             </p>
             <textarea
               onChange={(e) => setUserStoryPrompt(e.target.value)}
-              className="mb-10 textarea outline outline-offset-2 focus:outline-yellow-300 outline-yellow-300 outline-2 w-full"
+              className="mb-5 textarea outline outline-offset-2 focus:outline-yellow-300 outline-yellow-300 outline-2 w-full"
               placeholder="Write a user story for ...."
             ></textarea>
             <p className="text-xs">
