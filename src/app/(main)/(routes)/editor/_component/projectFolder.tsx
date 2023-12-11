@@ -1,6 +1,7 @@
 "use client";
 
-import { ChevronRight, Folder } from "lucide-react";
+import { useEffect, useState } from "react";
+import { FileText, Folder, Plus } from "lucide-react";
 import Item from "./item";
 
 const ProjectFolder = () => {
@@ -12,16 +13,28 @@ const ProjectFolder = () => {
       >
         <Folder className="shrink-0 h-[18px] mr-2" />
         <span className="truncate">Jaggle Ai</span>
+        <div className="h-[18px] w-[18px] group">
+          <Plus
+            onClick={() => {
+              document.getElementById("my_modal_4")?.showModal();
+            }}
+            className="shrink-0 h-[18px] w-[18px] rounded-sm hidden absolute group-hover:flex right-10 hover:bg-gray-600"
+          />
+        </div>
       </div>
 
       <Item
         onClick={() => {}}
-        label="New Project"
-        icon={ChevronRight}
+        label="SSO Module"
+        icon={FileText}
         active={true}
       />
-      <Item onClick={() => {}} label="New Project" icon={ChevronRight} />
-      <Item onClick={() => {}} label="New Project" icon={ChevronRight} />
+      <Item
+        onClick={() => {}}
+        label="Normal Authentication Module"
+        icon={FileText}
+      />
+      <Item onClick={() => {}} label="Profile Module" icon={FileText} />
     </>
   );
 };

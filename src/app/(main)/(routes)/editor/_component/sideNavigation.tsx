@@ -1,7 +1,12 @@
 "use client";
 
 import { ElementRef, useEffect, useRef, useState } from "react";
-import { ChevronsLeft, MenuIcon, PlusCircle } from "lucide-react";
+import {
+  ChevronsLeft,
+  ChevronsUpDown,
+  MenuIcon,
+  PlusCircle,
+} from "lucide-react";
 import { useMediaQuery } from "usehooks-ts";
 import { usePathname, useRouter } from "next/navigation";
 import getUser from "@/app/api/getCurrentUser";
@@ -115,7 +120,6 @@ const SideNavigation = ({ getData }: any) => {
   ) => {
     event.preventDefault();
     event.stopPropagation();
-
     isResizing.current = true;
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseup);
@@ -144,9 +148,12 @@ const SideNavigation = ({ getData }: any) => {
   return (
     <>
       {loading ? (
-        <div className="w-screen h-screen bg-black/60 absolute top-0 left-0 z-[999999] flex justify-center items-center">
-          <p>Jaggle is 💭</p>
-          <span className="loading loading-dots loading-lg"></span>
+        <div className="w-screen h-screen bg-black/60 absolute top-0 left-0 z-[999999] flex justify-center items-center flex-col">
+          <p className="text-lg font-extrabold text-center">
+            Jaggle is writing your user story. <br /> It will take less than a
+            min, thank you for your patience 🫰
+          </p>
+          <span className="mt-5 loading loading-dots loading-lg"></span>
         </div>
       ) : null}
       <aside
@@ -157,7 +164,11 @@ const SideNavigation = ({ getData }: any) => {
       >
         <div className="w-auto px-4 pt-[12px] z-[999999] flex">
           <div className="w-full dropdown">
-            <div tabIndex={0} role="button" className="w-full flex">
+            <div
+              tabIndex={0}
+              role="button"
+              className="w-full flex items-center"
+            >
               <div className="avatar object-contain">
                 <div className="w-7 h-7 rounded-full">
                   {/* trunk-ignore(eslint/@next/next/no-img-element) */}
@@ -167,7 +178,7 @@ const SideNavigation = ({ getData }: any) => {
 
               <div className="ml-2">
                 <p className="text-xs">{user?.firstName}'s Workspace</p>
-                <p className="text-[8px]">
+                <p className="text-[9px] truncate">
                   {truncateStr(
                     user?.emailAddresses[0].emailAddress,
                     user?.emailAddresses[0].emailAddress.indexOf("@"),
@@ -175,6 +186,7 @@ const SideNavigation = ({ getData }: any) => {
                   ...
                 </p>
               </div>
+              <ChevronsUpDown className="ml-1 h-[13px]" />
             </div>
 
             <ul
@@ -201,43 +213,10 @@ const SideNavigation = ({ getData }: any) => {
               isMobile ? "opacity-100" : "opacity-0"
             }`}
           >
-            <ChevronsLeft className="h-6 w-6 text-yellow-300" />
+            <ChevronsLeft className="h-6 w-6" />
           </div>
         </div>
 
-        {/* <button
-					className="btn my-10 bg-yellow-300 text-black max-w-[300px] mx-auto"
-					onClick={() => {
-						document.getElementById("my_modal_4")?.showModal();
-					}}
-				>
-					<p className="text-xs">Generate User Story</p>
-				</button> */}
-        <dialog id="my_modal_4" className="modal w-[60%] mx-auto">
-          <div className="modal-box w-11/12 max-w-5xl">
-            <p className="mb-10 font-bold text-lg">
-              👋 What feature are you working today ?
-            </p>
-            <textarea
-              onChange={(e) => setUserStoryPrompt(e.target.value)}
-              className="mb-10 textarea outline outline-offset-2 focus:outline-yellow-300 outline-yellow-300 outline-2 w-full"
-              placeholder="Write a user story for ...."
-            ></textarea>
-            <p className="text-xs">
-              <i>
-                Example Prompt: Generate a user story for a SSO auth module with
-                google and linkedIn feature.
-              </i>
-            </p>
-            <div className="modal-action">
-              <form method="dialog">
-                <button onClick={generateStory} className="btn">
-                  Start Writing
-                </button>
-              </form>
-            </div>
-          </div>
-        </dialog>
         <div className="mt-8">
           <CreateProject
             onClick={() => {
@@ -286,6 +265,32 @@ const SideNavigation = ({ getData }: any) => {
         <div className="mt-8">
           <ProjectFolder />
         </div>
+
+        <dialog id="my_modal_4" className="modal w-[60%] mx-auto">
+          <div className="modal-box w-11/12 max-w-5xl">
+            <p className="mb-10 font-bold text-lg">
+              👋 What feature are you working today ?
+            </p>
+            <textarea
+              onChange={(e) => setUserStoryPrompt(e.target.value)}
+              className="mb-10 textarea outline outline-offset-2 focus:outline-yellow-300 outline-yellow-300 outline-2 w-full"
+              placeholder="Write a user story for ...."
+            ></textarea>
+            <p className="text-xs">
+              <i>
+                Example Prompt: Generate a user story for a SSO auth module with
+                google and linkedIn feature.
+              </i>
+            </p>
+            <div className="modal-action">
+              <form method="dialog">
+                <button onClick={generateStory} className="btn">
+                  Start Writing
+                </button>
+              </form>
+            </div>
+          </div>
+        </dialog>
 
         <div
           onMouseDown={handleMouseDown}

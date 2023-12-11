@@ -20,10 +20,10 @@ export default function Home() {
           Partner for Your Team.
         </p>
         <p className="w-[60%] text-sm">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla iusto
-          numquam assumenda provident. Officiis esse saepe cumque numquam
-          tempora odio illo dolorum error inventore alias! Aspernatur ducimus
-          exercitationem omnis tempora.
+          Elevate your software development game with Jaggle AI. Our AI-driven
+          platform streamlines user story creation and sprint planning, making
+          agile success effortless. Say hello to precision and efficiency in
+          every sprint.
         </p>
 
         <Link
@@ -34,7 +34,7 @@ export default function Home() {
         </Link>
       </div>
 
-      <div className="mockup-browser border border-base-300 w-[80%] h-[600px] mt-14">
+      <div className="mockup-browser border border-base-300 w-[80%] h-[700px] mt-14">
         <span className="indicator-item badge bg-yellow-300 p-4 text-black absolute right-0 top-3 -rotate-12">
           Work 10x faster
         </span>
