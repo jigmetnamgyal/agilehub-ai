@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FileText, Folder, Trash, Plus, Divide } from "lucide-react";
+import { FileText, Folder, Trash, Plus } from "lucide-react";
 import Item from "./item";
 import { supabaseClient } from "@/app/api/supabase";
 import { useAuth } from "@clerk/nextjs";
