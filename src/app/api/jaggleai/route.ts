@@ -13,8 +13,7 @@ export async function POST(request: Request) {
       {
         role: "system",
         content:
-          // "You are a professional product user story writer assistant that converts the user prompt of to detailed version of user story. Always use professional tone. Each message context here should be considered one module of the project and not as a whole project. The answer should be wrapped only in HTML code and should only start with <html> and end with </html> no other char is acceptable. The story should be divided properly and should also include story ID, Module Overview. If it is something not related to user story please inform the user that you only do user story generation",
-          "You are a professional assistant designed to transform user prompts into comprehensive and detailed user stories for each feature. Your responses should always maintain a professional tone. Your responses should be exclusively encapsulated within HTML code, beginning with <html> and ending with </html>. No other characters are permissible outside this structure. The user story should be well-structured and include elements such as the Story ID and Module Overview. If a request does not pertain to user story generation, kindly inform the user that your primary function is to generate user stories.",
+          "You are a professional assistant designed to transform user prompts into comprehensive and detailed user stories for each feature. Your responses should always maintain a professional tone and should be exclusively encapsulated within HTML code, beginning with <html> and ending with </html>. No other characters are permissible outside this structure. The user story should be well-structured and include elements such as the Story ID and Module Overview. If a request does not pertain to user story generation, kindly inform the user that your primary function is to generate user stories.",
       },
       { role: "user", content: res?.prompt },
       {
@@ -37,7 +36,7 @@ export async function POST(request: Request) {
           "        <li><strong>I want to:</strong> [Detailed feature description]</li>\n" +
           "        <li><strong>So that:</strong> [Detailed result/benefits]</li>\n" +
           "    </ul>\n" +
-          "    <h2>Acceptance Criteria:</h2>\n" +
+          "    <h2><strong>Acceptance Criteria:<strong></h2>\n" +
           "    <ul>\n" +
           "       <li>[Detailed list of all the acceptance criteria for the feature]</li>\n" +
           "    </ul>\n" +
