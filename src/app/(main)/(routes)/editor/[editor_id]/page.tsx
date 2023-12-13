@@ -7,6 +7,7 @@ import getUser from "@/app/api/getCurrentUser";
 
 import "@blocknote/core/style.css";
 import SideNavigation from "../_component/sideNavigation";
+import Diagram from "../_component/diagram";
 
 const Editor = () => {
   const [userDetails, setUserDetails] = useState({});
@@ -40,14 +41,17 @@ const Editor = () => {
     <div className="flex max-w-screen w-screen h-screen min-h-auto bg-white">
       <SideNavigation getData={getJaggleAiResponse} />
       {/* <BlockNoteView
-        className="w-full h-full p-16"
-        editor={editor}
-        theme={"light"}
-      /> */}
-      <div
-        className="text-black w-full p-16 h-full"
-        dangerouslySetInnerHTML={{ __html: removeBackticks(userStory) }}
-      />
+		    className="w-full h-full p-16"
+		    editor={editor}
+		    theme={"light"}
+		  /> */}
+      {/* <div
+		    className="text-black w-full p-16 h-full"
+		    dangerouslySetInnerHTML={{ __html: removeBackticks(userStory) }}
+		  /> */}
+      <div className="text-black w-full p-16 h-full">
+        <Diagram mermaidCode={userStory} />
+      </div>
     </div>
   );
 };
