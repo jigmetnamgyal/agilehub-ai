@@ -16,6 +16,7 @@ import CreateProject from "./createProject";
 import ProjectFolder from "./projectFolder";
 import { toast } from "sonner";
 import { supabaseClient } from "@/app/api/supabase";
+import CreateBpmn from "./createBpmn";
 
 const SideNavigation = ({ getData }: any) => {
   const { signOut } = useClerk();
@@ -42,6 +43,9 @@ const SideNavigation = ({ getData }: any) => {
 
   const [projectDescription, setProjectDescription] = useState<string>("");
   const [projectTitle, setProjectTitle] = useState<string>("");
+
+  // Remove this later
+  const [testUserStory, setTestUserStory] = useState<string>("");
 
   useEffect(() => {
     if (isMobile) {
@@ -160,6 +164,28 @@ const SideNavigation = ({ getData }: any) => {
     }
   };
 
+  const generateBpmnDiagram = async () => {
+    setLoading(true);
+
+    const token = await getToken({ template: "jaggle_ai_supabase_jwt" });
+
+    const response = await fetch("/api/bpmn-ai", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+      body: JSON.stringify({
+        prompt: testUserStory,
+      }),
+    });
+
+    const data = await response.json();
+
+    console.log(data);
+    getData(data);
+    setLoading(false);
+  };
+
   async function generateStory() {
     setLoading(true);
 
@@ -200,8 +226,8 @@ const SideNavigation = ({ getData }: any) => {
       {loading ? (
         <div className="w-screen h-screen bg-gray-500/60 absolute top-0 left-0 flex flex-col justify-center items-center">
           <p className="text-lg font-extrabold text-center">
-            Jaggle is writing your user story. <br /> It will take less than a
-            min, thank you for your patience 🫰
+            Jaggle is generating your Flow diagram. <br /> It will take less
+            than a min, thank you for your patience 🫰
           </p>
           <span className="mt-5 loading loading-dots loading-lg"></span>
         </div>
@@ -276,6 +302,43 @@ const SideNavigation = ({ getData }: any) => {
             icon={PlusCircle}
           />
         </div>
+
+        <div className="mt-8">
+          <CreateBpmn
+            onClick={() => {
+              document.getElementById("bpmn_model")?.showModal();
+            }}
+            label="New Bpmn Diagram"
+            icon={PlusCircle}
+          />
+        </div>
+
+        <dialog id="bpmn_model" className="modal w-[60%] mx-auto">
+          <div className="modal-box w-11/12 max-w-5xl">
+            <p className="mb-5 font-bold text-md">Your user Story</p>
+            <textarea
+              onChange={(e) => setTestUserStory(e.target.value)}
+              className="mb-3 textarea outline outline-offset-1 focus:outline-yellow-300 outline-yellow-300 outline-1 w-full rounded-md"
+              placeholder="Type Here ..."
+            ></textarea>
+            <p className="text-xs text-gray-400">
+              <i>
+                Give detailed user story about the project so that Jaggle AI can
+                generate a bpmn diagram for you.
+              </i>
+            </p>
+            <div className="modal-action">
+              <form method="dialog">
+                <button
+                  onClick={generateBpmnDiagram}
+                  className="btn text-white"
+                >
+                  Create Bpmn Diagram
+                </button>
+              </form>
+            </div>
+          </div>
+        </dialog>
 
         <dialog id="my_modal_5" className="modal w-[60%] mx-auto">
           <div className="modal-box w-11/12 max-w-5xl">
