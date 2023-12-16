@@ -34,7 +34,7 @@ const SignUp = () => {
 
       setVerifying(true);
     } catch (err: any) {
-      toast.error(err.message);
+      toast.error(err.errors[0].longMessage);
     }
   };
 
