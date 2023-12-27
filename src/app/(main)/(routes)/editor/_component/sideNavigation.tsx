@@ -172,6 +172,8 @@ const SideNavigation = ({ getData }: any) => {
       },
       body: JSON.stringify({
         prompt: userStoryPrompt,
+        projectID: projectId,
+        jwtToken: token,
       }),
     });
 
@@ -289,7 +291,7 @@ const SideNavigation = ({ getData }: any) => {
               className="mb-5 input outline outline-offset-1 focus:outline-yellow-300 outline-yellow-300 outline-1 w-full rounded-md"
             />
             <p className="mb-5 font-bold text-md">
-              👋 Tell me more about your Project ?
+              Tell me more about your Project ?
             </p>
             <textarea
               onChange={(e) => setProjectDescription(e.target.value)}

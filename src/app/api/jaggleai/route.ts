@@ -2,18 +2,30 @@
 
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
+import { supabaseClient } from "../supabase";
 
 const openai = new OpenAI();
 
 export async function POST(request: Request) {
   const res = await request.json();
 
+  const projectID = res.projectID;
+  const jwtToken = res.jwtToken;
+
+  const { data, error } = await supabaseClient(jwtToken || "")
+    .from("projects")
+    .select("description")
+    .eq("id", projectID);
+
+  if (error) {
+    console.error(error.message);
+  }
+
   const completion = await openai.chat.completions.create({
     messages: [
       {
         role: "system",
-        content:
-          "You are a professional assistant designed to transform user prompts into comprehensive and detailed user stories for each feature. Your responses should always maintain a professional tone and should be exclusively encapsulated within HTML code, beginning with <html> and ending with </html>. No other characters are permissible outside this structure. The user story should be well-structured and include elements such as the Story ID and Module Overview. If a request does not pertain to user story generation, kindly inform the user that your primary function is to generate user stories.",
+        content: `You are a professional assistant designed to transform user prompts into comprehensive and detailed user stories for each feature. Your responses should always maintain a professional tone and should be exclusively encapsulated within HTML code, beginning with <html> and ending with </html>. No other characters are permissible outside this structure. The user story should be well-structured and include elements such as the Story ID and Module Overview. If a request does not pertain to user story generation, kindly inform the user that your primary function is to generate user stories and it should always begin with ERROR key word. Generate the user in context of the project description provided as: ${data[0].description}`,
       },
       { role: "user", content: res?.prompt },
       {
@@ -46,6 +58,7 @@ export async function POST(request: Request) {
     ],
     model: "gpt-4-1106-preview",
     max_tokens: 1000,
+    temperature: 1.0,
   });
 
   console.log(completion.choices[0]);
