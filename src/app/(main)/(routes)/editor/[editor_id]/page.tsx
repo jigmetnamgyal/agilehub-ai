@@ -39,15 +39,15 @@ const Editor = () => {
   return (
     <div className="flex max-w-screen w-screen h-screen min-h-auto bg-white">
       <SideNavigation getData={getJaggleAiResponse} />
-      {/* <BlockNoteView
+      <BlockNoteView
         className="w-full h-full p-16"
         editor={editor}
         theme={"light"}
-      /> */}
-      <div
+      />
+      {/* <div
         className="text-black w-full p-16 h-full"
         dangerouslySetInnerHTML={{ __html: removeBackticks(userStory) }}
-      />
+      /> */}
     </div>
   );
 };

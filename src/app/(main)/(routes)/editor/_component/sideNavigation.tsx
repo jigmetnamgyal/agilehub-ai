@@ -11,7 +11,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { usePathname, useRouter } from "next/navigation";
 import getUser from "@/app/api/getCurrentUser";
 import truncateStr from "../_utils/truncate";
-import { useAuth, useClerk } from "@clerk/nextjs";
+import { useAuth, useClerk, UserButton } from "@clerk/nextjs";
 import CreateProject from "./createProject";
 import ProjectFolder from "./projectFolder";
 import { toast } from "sonner";
@@ -210,12 +210,12 @@ const SideNavigation = ({ getData }: any) => {
       ) : null}
       <aside
         ref={sideBarRef}
-        className={`group/sidebar bg-primary-content z-[99999] h-full overflow-y-auto relative flex flex-col ${
+        className={`group/sidebar bg-primary-content h-full overflow-y-auto relative flex flex-col ${
           isResetting && "transition-all ease-in-out duration-300"
         } ${isMobile ? "w-0 p-0" : "w-72"}`}
       >
         <div className="w-auto px-4 pt-[12px] z-[999999] flex">
-          <div className="w-full dropdown">
+          {/* <div className="w-full dropdown">
             <div
               tabIndex={0}
               role="button"
@@ -223,7 +223,7 @@ const SideNavigation = ({ getData }: any) => {
             >
               <div className="avatar object-contain">
                 <div className="w-7 h-7 rounded-full">
-                  {/* trunk-ignore(eslint/@next/next/no-img-element) */}
+                  trunk-ignore(eslint/@next/next/no-img-element)
                   <img src={user?.imageUrl} alt="Avatar" />
                 </div>
               </div>
@@ -256,6 +256,19 @@ const SideNavigation = ({ getData }: any) => {
                 </p>
               </li>
             </ul>
+          </div> */}
+          <div className="w-full flex items-center gap-x-3">
+            <UserButton />
+            <div>
+              <p className="text-[9px] truncate">
+                {truncateStr(
+                  user?.emailAddresses[0].emailAddress,
+                  user?.emailAddresses[0].emailAddress.indexOf("@"),
+                )}
+                ...
+              </p>
+              <p className="text-[9px]">Jigme Namgyal</p>
+            </div>
           </div>
 
           <div
