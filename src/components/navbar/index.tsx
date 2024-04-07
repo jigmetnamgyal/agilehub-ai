@@ -23,7 +23,7 @@ const NavBar = () => {
   }, [userDetails]);
 
   return (
-    <div className="navbar bg-base-100 max-w-screen w-screen p-8">
+    <div className="navbar bg-base-100 max-w-screen w-screen p-4">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -84,24 +84,18 @@ const NavBar = () => {
         {!userDetails ? (
           <Link
             href={"/auth/login"}
-            className="btn bg-yellow-300 text-black rounded-[5px] px-10 hover:text-white hover:bg-transparent hover:border-2 hover:border-yellow-300"
+            className="btn bg-primary text-black rounded-[5px] px-10 hover:text-white hover:bg-transparent hover:border-2 hover:border-primary"
           >
             Get Started
           </Link>
         ) : (
           <div className="avatar">
-            <div
-              onClick={() => {
-                signOut(() => router.push("/"));
-                setUser(null);
-              }}
-              className="w-8 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2"
+            <Link
+              href={"/auth/login"}
+              className="mr-8 btn bg-primary text-white rounded-[5px] px-10 hover:text-white hover:bg-transparent hover:border-2 hover:border-primary"
             >
-              <img
-                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                alt=""
-              />
-            </div>
+              Dashboard
+            </Link>
           </div>
         )}
       </div>
