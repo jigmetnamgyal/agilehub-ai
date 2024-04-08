@@ -18,7 +18,7 @@ import { toast } from "sonner";
 import { supabaseClient } from "@/app/api/supabase";
 import CreateBpmn from "./createBpmn";
 
-const SideNavigation = ({ getData }: any) => {
+const SideNavigation = ({ getData, setContent }: any) => {
   const { signOut } = useClerk();
   const router = useRouter();
   const { userId, getToken } = useAuth();
@@ -69,7 +69,7 @@ const SideNavigation = ({ getData }: any) => {
     };
 
     getUserDetails();
-  }, []);
+  }, [pages]);
 
   const handleMouseMove = (e: MouseEvent) => {
     if (!isResizing.current) return;
@@ -153,16 +153,31 @@ const SideNavigation = ({ getData }: any) => {
           },
         ])
         .select();
-
       if (error) {
         toast.error(error.message);
       } else {
+        setPages([...pages, data![0]])
         toast.success("Project created successfully");
       }
     } catch (err: any) {
       toast.error(err.message);
     }
   };
+
+  const handleDeleteProject = async (id: any) => {
+    const token = await getToken({ template: "jaggle_ai_supabase_jwt" });
+    let { data, error } = await supabaseClient(token || "")
+      .from("projects")
+      .delete()
+      .eq("user_id", userId)
+      .eq("id", id);
+    if (error) {
+      toast.error(error.message);
+    } else {
+      setPages([...pages])
+      toast.success("Project deleted successfully");
+    }
+};
 
   const generateBpmnDiagram = async () => {
     setLoading(true);
@@ -217,7 +232,7 @@ const SideNavigation = ({ getData }: any) => {
       ])
       .select("*");
 
-    setPages(pages.data);
+    setPages([...pages.data as any]);
     setLoading(false);
   }
 
@@ -253,7 +268,7 @@ const SideNavigation = ({ getData }: any) => {
               </div>
 
               <div className="ml-2">
-                <p className="text-xs">{user?.firstName}'s Workspace</p>
+                <p className="text-xs">{user?.firstName}{`'s Workspace`}</p>
                 <p className="text-[9px] truncate">
                   {truncateStr(
                     user?.emailAddresses[0].emailAddress,
@@ -296,7 +311,7 @@ const SideNavigation = ({ getData }: any) => {
         <div className="mt-8">
           <CreateProject
             onClick={() => {
-              document.getElementById("my_modal_5")?.showModal();
+              (document.getElementById("my_modal_5") as any)?.showModal();
             }}
             label="New Project"
             icon={PlusCircle}
@@ -306,14 +321,14 @@ const SideNavigation = ({ getData }: any) => {
         <div className="mt-8">
           <CreateBpmn
             onClick={() => {
-              document.getElementById("bpmn_model")?.showModal();
+              (document.getElementById("bpmn_model") as any)?.showModal();
             }}
             label="New Bpmn Diagram"
             icon={PlusCircle}
           />
         </div>
 
-        <dialog id="bpmn_model" className="modal w-[60%] mx-auto">
+        <dialog id="bpmn_model" className="modal w-[60%] mx-auto bg-black">
           <div className="modal-box w-11/12 max-w-5xl">
             <p className="mb-5 font-bold text-md">Your user Story</p>
             <textarea
@@ -377,7 +392,7 @@ const SideNavigation = ({ getData }: any) => {
         </dialog>
 
         <div className="mt-8">
-          <ProjectFolder project_id={getProjectId} pages={pages} />
+          <ProjectFolder project_id={getProjectId} pages={pages} deleteProject={handleDeleteProject} setContent={setContent}/>
         </div>
 
         <dialog id="my_modal_4" className="modal w-[60%] mx-auto">

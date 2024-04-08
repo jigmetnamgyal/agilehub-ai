@@ -9,8 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@blocknote/core": "^0.10.0",
-    "@blocknote/react": "^0.10.0",
+    "@blocknote/core": "^0.12.4",
+    "@blocknote/react": "^0.12.4",
     "@clerk/nextjs": "^4.27.4",
     "@next/env": "^14.0.3",
     "@react-three/drei": "^9.105.2",

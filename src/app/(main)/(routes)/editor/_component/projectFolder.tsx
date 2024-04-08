@@ -7,7 +7,7 @@ import { supabaseClient } from "@/app/api/supabase";
 import { useAuth } from "@clerk/nextjs";
 import { toast } from "sonner";
 
-const ProjectFolder = ({ project_id, pages }: any) => {
+const ProjectFolder = ({ project_id, pages, deleteProject, setContent }: any) => {
   const [projects, setProjects] = useState([]);
   const { getToken, userId } = useAuth();
 
@@ -36,30 +36,12 @@ const ProjectFolder = ({ project_id, pages }: any) => {
     };
 
     projectList();
-  }, []);
+  }, [pages]);
 
-  const handleDeleteProject = (id: any) => {
-    async function deleteProject(id: any) {
-      const token = await getToken({ template: "jaggle_ai_supabase_jwt" });
-
-      let { data, error } = await supabaseClient(token || "")
-        .from("projects")
-        .delete()
-        .eq("user_id", userId)
-        .eq("id", id);
-
-      if (error) {
-        toast.error(error.message);
-      } else {
-        toast.success("Project deleted successfully");
-      }
-    }
-    deleteProject(id);
-  };
 
   return (
     <div>
-      {projects?.map((project) => (
+      {projects?.map((project: any) => (
         <div key={project.id}>
           <div
             role="button"
@@ -71,6 +53,7 @@ const ProjectFolder = ({ project_id, pages }: any) => {
               <Plus
                 onClick={() => {
                   project_id(project.id);
+                  setContent("");
                   document.getElementById("my_modal_4")?.showModal();
                 }}
                 className="shrink-0 h-[18px] w-[18px] rounded-sm hidden absolute group-hover:flex right-8 hover:bg-gray-600"
@@ -78,15 +61,15 @@ const ProjectFolder = ({ project_id, pages }: any) => {
 
               <Trash
                 onClick={() => {
-                  handleDeleteProject(project.id);
+                  deleteProject(project.id);
                 }}
                 className="shrink-0 h-[18px] w-[14px] rounded-sm hidden absolute group-hover:flex right-14 hover:bg-gray-600"
               />
             </div>
           </div>
 
-          {project?.pages.map((page) => (
-            <Item onClick={() => {}} label={page?.page_title} icon={FileText} />
+          {project?.pages.map((page: any) => (
+            <Item onClick={() => {setContent(page?.ai_generated_description)}} label={page?.page_title} icon={FileText} key={page?.id + '' + project?.id} />
           ))}
         </div>
       ))}

@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     messages: [
       {
         role: "system",
-        content: `You are an assistant helping to generate a Bpmn flowchart about a topic. Only return the bpmn flowchart in mermaid JS format with no other text.
+        content: `You are an assistant helping to generate a Bpmn flowchart about a topic. Only return the bpmn flowchart in mermaid JS format with.
           Each node has to have a type, which is one of the following: 
           - startEvent
           - endEvent
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
       },
       { role: "user", content: res?.prompt },
     ],
-    model: "gpt-4-1106-preview",
+    model: "gpt-3.5-turbo",
     max_tokens: 1000,
   });
 
