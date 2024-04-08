@@ -67,7 +67,6 @@ const Editor = () => {
     });
 
     const data = await response.json();
-    console.log(removeBackticks((data.jaggleAiResponse as any)?.replace(`/^mermaid\s+/`, '')), 'newwwwwwwwwwwww');
      setGraph(`
      flowchart LR
      start1(Start ¡!startEvent!¡) --> loginPage[Show Login Page ¡!activity!¡]
