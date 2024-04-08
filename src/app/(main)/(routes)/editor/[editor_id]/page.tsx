@@ -68,7 +68,14 @@ const Editor = () => {
 
     const data = await response.json();
     console.log(removeBackticks((data.jaggleAiResponse as any)?.replace(`/^mermaid\s+/`, '')), 'newwwwwwwwwwwww');
-     setGraph(data.jaggleAiResponse);
+     setGraph(`
+     flowchart LR
+     start1(Start ¡!startEvent!¡) --> loginPage[Show Login Page ¡!activity!¡]
+     loginPage --> googleLinkedIn[Select Google or LinkedIn ¡!activity!¡]
+     googleLinkedIn --> authenticate[Redirect to Authentication Page ¡!activity!¡]
+     authenticate --> googleLinkedInCred[Authenticate with Google or LinkedIn ¡!activity!¡]
+     googleLinkedInCred --> loggedIn[Logged In ¡!activity!¡]\nloggedIn --> end1(End ¡!endEvent!¡)
+     ` as any);
   };
 
   return (
