@@ -24,7 +24,6 @@ const Item = ({
   active,
 }: ItemProps) => {
   const ChevronIcon = expanded ? ChevronDown : ChevronRight;
-
   return (
     <div
       onClick={onClick}

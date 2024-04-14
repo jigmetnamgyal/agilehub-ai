@@ -13,7 +13,7 @@ export async function POST(request: Request) {
       {
         role: "system",
         content:
-          "You are a professional assistant designed to transform user prompts into comprehensive and detailed user stories for each feature. Your responses should always maintain a professional tone and should be exclusively encapsulated within HTML code, beginning with <html> and ending with </html>. No other characters are permissible outside this structure. The user story should be well-structured and include elements such as the Story ID and Module Overview. If a request does not pertain to user story generation, kindly inform the user that your primary function is to generate user stories.",
+          "You are a professional assistant designed to transform user prompts into comprehensive and detailed user stories for each feature. Your responses should always maintain a professional tone. Your responses should be exclusively encapsulated within HTML code, beginning with <html> and ending with </html>. No other characters are permissible outside this structure. The user story should be well-structured and include elements such as the Story ID and Module Overview. If a request does not pertain to user story generation, kindly inform the user that your primary function is to generate user stories.",
       },
       { role: "user", content: res?.prompt },
       {
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
           "        <li><strong>I want to:</strong> [Detailed feature description]</li>\n" +
           "        <li><strong>So that:</strong> [Detailed result/benefits]</li>\n" +
           "    </ul>\n" +
-          "    <h2><strong>Acceptance Criteria:<strong></h2>\n" +
+          "    <h2>Acceptance Criteria:</h2>\n" +
           "    <ul>\n" +
           "       <li>[Detailed list of all the acceptance criteria for the feature]</li>\n" +
           "    </ul>\n" +
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
           "</html>",
       },
     ],
-    model: "gpt-4-1106-preview",
+    model: "gpt-3.5-turbo",
     max_tokens: 1000,
   });
 
